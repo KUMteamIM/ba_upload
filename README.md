@@ -46,13 +46,6 @@ connection.error_files.each do |error_file|
   FileUtils.cp(tf.path, target_path)
 end
 
-# generate file name for JobPostings XML
-# arguments are concatenated with _ and added to file name
-filename = BaUpload.postings_filename('PARTNER_ID')
-# returns "DSPARTNER_ID_2022-01-01_00-00-00.xml"
-filename = BaUpload.postings_filename('PARTNER_ID', 'S', '0123')
-# returns "DSPARTNER_ID_2022-01-01_00-00-00_S_0123.xml"
-
 ```
 
 ### Usage from outside Ruby (e.g. Cronjob/script):
@@ -77,6 +70,18 @@ connection.misc.each do |link|
   response = link.click
   File.open(target, "wb+") { |f| f.write(response.body) }
 end
+```
+
+### Generating file names
+
+In order to generate an api-conform name for the job posting xml, use `BaUpload.postings_filename`.
+First parameter is the partner ID, all other parameters are concatenated with _ and added to the file name.
+
+```ruby
+# for "DSPARTNER_ID_2022-01-01_00-00-00.xml"
+BaUpload.postings_filename('PARTNER_ID')
+# for "DSPARTNER_ID_2022-01-01_00-00-00_S_0123.xml"
+BaUpload.postings_filename('PARTNER_ID', 'S', '0123')
 ```
 
 ## License
