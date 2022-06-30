@@ -31,14 +31,13 @@ gem install ba_upload
 ```ruby
 require 'ba_upload'
 
-# your supplied certificate and passphrase
-connection = BaUpload.open_connection(file_path: 'config/Zertifikat-1XXXX.p12', passphrase: 'YOURPASSPHRASE')
-
+# connect
+file = File.open('config/Zertifikat-1XXXX.p12')
+connection = BaUpload.open_connection(file: file, passphrase: 'YOURPASSPHRASE')
 # Upload a xml-file
 connection.upload(file: File.open('/opt/vam-transfer/data/DSP000132700_2016-08-08_05-00-09.xml'))
 
 # later cronjob to download all error files
-
 connection.error_files.each do |error_file|
   target_path = "/opt/vam-transfer/data/#{error_file.filename}"
   next if File.exists?(target_path)
